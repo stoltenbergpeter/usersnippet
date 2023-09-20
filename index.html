@@ -90,6 +90,8 @@
               if (details.topicName.includes('calls')) {
                 console.log('Messaging Notification: ', details)
                 console.log('convoId: ', conversationId)
+                  console.log('v2', details.body.id)
+                console.log('v3', body.id)
                 // prettier-ignore
                 let agentParticipant = details.eventBody.participants.slice().reverse().find(p => p.purpose === 'agent' && p.state === 'connected')
                 if (agentParticipant) {
