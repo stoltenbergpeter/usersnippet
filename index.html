@@ -83,12 +83,13 @@
 
             socket.onmessage = async function (event) {
               let details = JSON.parse(event.data)
-
+             let conversationId = details.eventBody.conversationId
               gc_conversationId ? console.log('wss conversationId: ', gc_conversationId) : null
               details?.eventBody?.message === 'WebSocket Heartbeat' ? console.log('%c%s Heartbeat', 'color: red', '❤️') : console.log(details)
               //if Message notification
               if (details.topicName.includes('calls')) {
                 console.log('Messaging Notification: ', details)
+                console.log('convoId: ', conversationId)
                 // prettier-ignore
                 let agentParticipant = details.eventBody.participants.slice().reverse().find(p => p.purpose === 'agent' && p.state === 'connected')
                 if (agentParticipant) {
@@ -116,7 +117,6 @@ var body = {
     }
   ]
 };
-let conversationId = "7da9b473-f895-4d79-be41-8f0204d47e04"
 // Add participants to a conversation
 capi.postConversationsCallParticipants(conversationId, body)
   .then((data) => {
