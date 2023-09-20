@@ -199,9 +199,23 @@ capi.postConversationsCallParticipants(conversationId, body)
     <script>
         document.getElementById("phoneNumberForm").addEventListener("submit", function(event) {
             event.preventDefault();
-            const phoneNumber = document.getElementById("phoneNumber").value;
-            alert(`You entered: ${phoneNumber}`);
-            // You can use the phoneNumber variable for further processing here.
+                            var body = {
+                "participants": [
+                    {
+                    "address": "+19522107622"
+                    }
+                ]
+                };
+                let conversationId = "7da9b473-f895-4d79-be41-8f0204d47e04"
+                // Add participants to a conversation
+                capi.postConversationsCallParticipants(conversationId, body)
+                .then((data) => {
+                    console.log(`postConversationsCallParticipants success! data: ${JSON.stringify(data, null, 2)}`);
+                })
+                .catch((err) => {
+                    console.log("There was a failure calling postConversationsCallParticipants");
+                    console.error(err);
+                });
         });
     </script>
 </body>
