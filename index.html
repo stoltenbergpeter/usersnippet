@@ -16,7 +16,6 @@
   </head>
     <body onload="start()">
 
-
         
     <script>
       'use strict' //Enables strict mode is JavaScript
@@ -83,7 +82,7 @@
 
             socket.onmessage = async function (event) {
               let details = JSON.parse(event.data)
-             let conversationId = details.eventBody.id
+             var conversationId = details.eventBody.id
               gc_conversationId ? console.log('wss conversationId: ', gc_conversationId) : null
               details?.eventBody?.message === 'WebSocket Heartbeat' ? console.log('%c%s Heartbeat', 'color: red', '❤️') : console.log(details)
               //if Message notification
