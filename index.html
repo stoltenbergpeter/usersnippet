@@ -16,6 +16,36 @@
   </head>
     <body onload="start()">
 
+        <div class="container">
+            <h2>Phone Number Input</h2>
+            <form id="phoneNumberForm">
+                <label for="phoneNumber">Phone Number:</label>
+                <input type="tel" id="phoneNumber" placeholder="Enter your phone number" required>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    
+        <script>
+            document.getElementById("phoneNumberForm").addEventListener("submit", function(event) {
+                event.preventDefault();
+                                var body = {
+                    "participants": [
+                        {
+                        "address": "+19522107622"
+                        }
+                    ]
+                    };            
+                    // Add participants to a conversation
+                    capi.postConversationsCallParticipants(conversationId, body)
+                    .then((data) => {
+                        console.log(`postConversationsCallParticipants success! data: ${JSON.stringify(data, null, 2)}`);
+                    })
+                    .catch((err) => {
+                        console.log("There was a failure calling postConversationsCallParticipants");
+                        console.error(err);
+                    });
+            });
+        </script>
         
     <script>
       'use strict' //Enables strict mode is JavaScript
@@ -82,14 +112,13 @@
 
             socket.onmessage = async function (event) {
               let details = JSON.parse(event.data)
-             var conversationId = details.eventBody.id
+             let conversationId = details.eventBody.id
               gc_conversationId ? console.log('wss conversationId: ', gc_conversationId) : null
               details?.eventBody?.message === 'WebSocket Heartbeat' ? console.log('%c%s Heartbeat', 'color: red', '❤️') : console.log(details)
               //if Message notification
               if (details.topicName.includes('calls')) {
                 console.log('Messaging Notification: ', details)
                 console.log('convoId: ', conversationId)
-                   return conversationId
                 // prettier-ignore
                 let agentParticipant = details.eventBody.participants.slice().reverse().find(p => p.purpose === 'agent' && p.state === 'connected')
                 if (agentParticipant) {
@@ -103,7 +132,7 @@
         } catch (err) {
           console.log('Error: ', err)
         }
-     
+
       } //End of start() function
 
 
@@ -130,97 +159,6 @@ capi.postConversationsCallParticipants(conversationId, body)
 
 </script>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phone Number Input</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 300px;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        input[type="tel"] {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-
-        button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Phone Number Input</h2>
-        <form id="phoneNumberForm">
-            <label for="phoneNumber">Phone Number:</label>
-            <input type="tel" id="phoneNumber" placeholder="Enter your phone number" required>
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-
-    <script>
-        document.getElementById("phoneNumberForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-                            var body = {
-                "participants": [
-                    {
-                    "address": "+19522107622"
-                    }
-                ]
-                };
-            
-                // Add participants to a conversation
-                capi.postConversationsCallParticipants(conversationId, body)
-                .then((data) => {
-                    console.log(`postConversationsCallParticipants success! data: ${JSON.stringify(data, null, 2)}`);
-                })
-                .catch((err) => {
-                    console.log("There was a failure calling postConversationsCallParticipants");
-                    console.error(err);
-                });
-        });
-    </script>
-</body>
-</html>
 
 
   </body>
